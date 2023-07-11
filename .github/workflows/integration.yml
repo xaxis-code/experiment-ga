@@ -9,7 +9,7 @@ jobs:
         id: selftest
 
         # Put your action repo here
-        uses: xxis-code/experiment-ga@feature/ga-testing
+        uses: YaakXis/experiment-ga@feature/ga-testing
 
       - name: Check outputs
         run: |
