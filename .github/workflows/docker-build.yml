@@ -3,7 +3,7 @@ name: Build Docker Image
 on:
   push:
     branches:
-      - main
+      - "123"
 
 env:
   IMAGE_NAME: experimentga
