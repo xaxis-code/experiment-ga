@@ -1,20 +1,8 @@
 # CircleCI configuration file
 version: 2.1
 
-orbs:
-  python: circleci/python@2.0.3
-
 # Define reusable commands
 commands:
-  checkout_and_setup_python:
-    parameters:
-      python-version:
-        type: string
-        default: "3.9"
-    steps:
-      - checkout
-      - setup-python:
-          version: << parameters.python-version >>
   install_flake8:
     steps:
       - run: pip install flake8
@@ -34,27 +22,27 @@ commands:
 executors:
   ubuntu-latest:
     docker:
-      - image: cimg/base:2022.05
+      - image: cimg/python:3.9
 
 # Define jobs
 jobs:
   lint:
     executor: ubuntu-latest
     steps:
-      - checkout_and_setup_python
+      - checkout
       - install_flake8
       - run: flake8 .
   test:
     executor: ubuntu-latest
     steps:
-      - checkout_and_setup_python
+      - checkout
       - install_dependencies
       - install_pytest
       - run: pytest
   build:
     executor: ubuntu-latest
     steps:
-      - checkout_and_setup_python
+      - checkout
       - setup_remote_docker # Enable Docker commands in the job
       - login_to_docker_hub
       - run: docker build --tag $IMAGE_NAME:latest .
@@ -71,4 +59,3 @@ workflows:
       - build:
           requires:
             - test
-
