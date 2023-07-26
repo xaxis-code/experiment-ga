@@ -60,9 +60,6 @@ jobs:
 # Define workflows
 workflows:
   ci:
-    when:
-      not: # Run the step only if CIRCLE_PULL_REQUEST is not empty
-        equal: [ "", << pipeline.parameters.CIRCLE_PULL_REQUEST >> ]
     jobs:
       - lint
       - test:
