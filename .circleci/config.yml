@@ -1,6 +1,9 @@
 # CircleCI configuration file
 version: 2.1
 
+orbs:
+  python: circleci/python@2.0.3
+
 # Define reusable commands
 commands:
   checkout_and_setup_python:
