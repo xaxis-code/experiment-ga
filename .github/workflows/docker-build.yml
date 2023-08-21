@@ -10,7 +10,7 @@ on:
         required: true
 
 env:
-  REPO_NAME: experimentga
+  REPO_NAME: yaakxis
   IMAGE_NAME: experimentga
 
 jobs:
