@@ -9,7 +9,7 @@ env:
 
 jobs:
   lint:
-    uses: ./.github/actions/python-lint.yml@feature/ga-testing
+    uses: ./.github/workflows/python-lint.yml@feature/ga-testing
     
   test:
     needs: lint
