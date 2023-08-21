@@ -9,7 +9,7 @@ env:
 
 jobs:
   lint:
-    uses: ./.github/workflows/python-lint.yml
+    uses: ./.github/workflows/python-lint.yaml
     
   test:
     needs: lint
