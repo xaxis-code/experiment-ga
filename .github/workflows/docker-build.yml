@@ -1,8 +1,13 @@
 ---
 name: Build Docker Image
 
+
 on:
   workflow_call:
+    secrets:
+      dockerhub-token:
+        description: 'Token for dockerhub'
+        required: true
 
 env:
   IMAGE_NAME: experimentga
@@ -19,7 +24,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: yaakxis
-          password: ${{ secrets.YAAKXIS_DOCKER_TOKEN }}
+          password: ${{ secrets.dockerhub-token }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
