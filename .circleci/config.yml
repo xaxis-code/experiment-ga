@@ -19,7 +19,7 @@ commands:
       - run: pip install pytest
   login_to_docker_hub:
     steps:
-      - run: echo "$DOCKERHUB_TOKEN" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
+      - run: docker login --username yaakxis --password $DOCKERHUB_TOKEN
 
 # Define reusable executors
 executors:
