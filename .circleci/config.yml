@@ -1,9 +1,6 @@
 # CircleCI configuration file
 version: 2.1
 
-environment:
-  IMAGE_NAME: "experiment-cci"
-
 # Define reusable commands
 commands:
   install_flake8:
@@ -44,6 +41,8 @@ jobs:
       - run: pytest
   build:
     executor: ubuntu-latest
+    environment:
+      IMAGE_NAME: "experiment-cci"
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job
