@@ -44,7 +44,6 @@ jobs:
       - run: pytest
   build:
     executor: ubuntu-latest
-    context: YaakXis
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job
@@ -63,3 +62,4 @@ workflows:
       - build:
           requires:
             - test
+          context: YaakXis # Specify the context at the workflow level
