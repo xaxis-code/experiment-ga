@@ -43,13 +43,14 @@ jobs:
     executor: ubuntu-latest
     environment:
       IMAGE_NAME: "experiment-cci"
+      REPO_NAME: "yaakxis"
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job
       - login_to_docker_hub
       - run: echo "Image name is ${IMAGE_NAME}"
-      - run: docker build --tag $IMAGE_NAME:latest .
-      - run: docker push $IMAGE_NAME:latest
+      - run: docker build --tag $REPO_NAME/$IMAGE_NAME:latest .
+      - run: docker push $REPO_NAME/$IMAGE_NAME:latest
 
 # Define workflows
 workflows:
