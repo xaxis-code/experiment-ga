@@ -9,7 +9,11 @@ env:
 
 jobs:
   lint:
-    uses: ./.github/workflows/python-lint.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/python-lint.yml
+        with:
+          python-version: 3.9
     
   test:
     needs: lint
