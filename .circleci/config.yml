@@ -1,6 +1,9 @@
 # CircleCI configuration file
 version: 2.1
 
+environment:
+  IMAGE_NAME: "experiment-cci"
+
 # Define reusable commands
 commands:
   install_flake8:
@@ -16,7 +19,7 @@ commands:
       - run: pip install pytest
   login_to_docker_hub:
     steps:
-      - run: echo "$DOCKER_HUB_ACCESS_TOKEN" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
+      - run: echo "$DOCKERHUB_TOKEN" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
 
 # Define reusable executors
 executors:
@@ -41,6 +44,7 @@ jobs:
       - run: pytest
   build:
     executor: ubuntu-latest
+    context: YaakXis
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job
