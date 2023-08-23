@@ -77,8 +77,7 @@ workflows:
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
         - or:
-          - matches: { pattern: "master", value: << pipeline.git.branch >> }
-          # - matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
+          - matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
     jobs:
       - lint
       - test:
