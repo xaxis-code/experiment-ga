@@ -10,7 +10,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/jobs/python-lint
+      - uses: ./.github/actions/python-lint
         with:
           python-version: 3.9
     
