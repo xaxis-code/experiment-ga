@@ -69,7 +69,7 @@ workflows:
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
         - not:
             or:
-              - equal: [ *deployment_branches, << pipeline.git.branch >> ]
+              - matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
     jobs:
       - lint
       - test:
@@ -83,7 +83,7 @@ workflows:
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
         - or:
-          - equal: [ *deployment_branches, << pipeline.git.branch >> ]
+          - matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
     jobs:
       - lint
       - test:
