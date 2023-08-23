@@ -1,7 +1,7 @@
 # CircleCI configuration file
 version: 2.1
 
-deployment_branches: &deployment_branches '["master", "dev", "test", "demo", "release", "prod", "main"]'
+deployment_branches: &deployment_branches '[master, dev, test, demo, release, prod, main]'
 
 # Define reusable commands
 commands:
@@ -51,7 +51,7 @@ jobs:
       - setup_remote_docker # Enable Docker commands in the job
       - login_to_docker_hub
       - run: echo "Image name is ${IMAGE_NAME}"
-      - run: docker build --tag $REPO_NAME/IMAGE_NAME:latest .
+      - run: docker build --tag $REPO_NAME/$IMAGE_NAME:latest .
       - run: docker push $REPO_NAME/$IMAGE_NAME:latest
 
 # Define workflows
@@ -59,8 +59,8 @@ workflows:
   pr:
     when:
       and:
-        # - not:
-        #     matches: { pattern: *deployment_branches, value: "main" }
+        - not:
+            matches: { pattern: *deployment_branches, value: "main" }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
@@ -73,7 +73,7 @@ workflows:
   on-merge:
     when:
       and:
-        # - matches: { pattern: *deployment_branches, value: "main" }
+        - matches: { pattern: *deployment_branches, value: "main" }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
