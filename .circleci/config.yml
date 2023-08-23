@@ -60,7 +60,7 @@ workflows:
     when:
       and:
         - not:
-            equal: [ main, << pipeline.git.branch >> ]
+            matches: { pattern: "(master|main)", value: << pipeline.git.branch >> }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
@@ -73,7 +73,7 @@ workflows:
   on-merge:
     when:
       and:
-        - equal: [ main, << pipeline.git.branch >> ]
+        - matches: { pattern: "(master|main)", value: << pipeline.git.branch >> }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
