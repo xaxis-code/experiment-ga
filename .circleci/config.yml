@@ -60,7 +60,7 @@ workflows:
     when:
       and:
         - not:
-            matches: { pattern: "[master, dev, test, demo, release, prod, main]", value: "main" }
+            matches: { pattern: '["master", "dev", "test", "demo", "release", "prod", "main"]', value: "main" }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
@@ -73,7 +73,7 @@ workflows:
   on-merge:
     when:
       and:
-        - matches: { pattern: "[master, dev, test, demo, release, prod, main]", value: "main" }
+        - matches: { pattern: '["master", "dev", "test", "demo", "release", "prod", "main"]', value: "main" }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
