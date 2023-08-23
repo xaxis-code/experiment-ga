@@ -68,7 +68,7 @@ workflows:
         - not: << pipeline.parameters.run-schedule >>
         - not:
             or:
-              - equal: [ *deployment_branches, << pipeline.git.branch >> ]
+              - equal: [ "master", << pipeline.git.branch >> ]
     jobs:
       - lint
       - test:
@@ -81,7 +81,7 @@ workflows:
       and:
         - not: << pipeline.parameters.run-schedule >>
         - or:
-            - equal: [ *deployment_branches, << pipeline.git.branch >> ]
+          - equal: [ "master", << pipeline.git.branch >> ]
     jobs:
       - lint
       - test:
@@ -91,4 +91,3 @@ workflows:
           requires:
             - test
           context: YaakXis # Specify the context at the workflow level
-
