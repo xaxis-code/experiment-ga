@@ -1,6 +1,14 @@
 # CircleCI configuration file
 version: 2.1
 
+deployment_branches: &deployment_branches
+  - master
+  - dev
+  - test
+  - demo
+  - release
+  - prod
+
 # Define reusable commands
 commands:
   install_flake8:
@@ -26,12 +34,12 @@ executors:
 
 # Define jobs
 jobs:
-  # lint:
-  #   executor: ubuntu-latest
-  #   steps:
-  #     - checkout
-  #     - install_flake8
-  #     - run: flake8 .
+  lint:
+    executor: ubuntu-latest
+    steps:
+      - checkout
+      - install_flake8
+      - run: flake8 .
   test:
     executor: ubuntu-latest
     steps:
@@ -54,9 +62,28 @@ jobs:
 
 # Define workflows
 workflows:
-  ci:
+  pr:
+    when:
+      and:
+        - not: << pipeline.parameters.run-schedule >>
+        - not:
+            or:
+              - equal: [ *ignore_branches, << pipeline.git.branch >> ]
     jobs:
-      - lint: *lint
+      - lint
+      - test:
+          requires:
+            - lint
+
+
+  on-merge:
+    when:
+      and:
+        - not: << pipeline.parameters.run-schedule >>
+        - or:
+            - equal: [ *ignore_branches, << pipeline.git.branch >> ]
+    jobs:
+      - lint
       - test:
           requires:
             - lint
@@ -64,3 +91,4 @@ workflows:
           requires:
             - test
           context: YaakXis # Specify the context at the workflow level
+
