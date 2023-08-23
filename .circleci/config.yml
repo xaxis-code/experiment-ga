@@ -84,4 +84,4 @@ workflows:
       - build:
           requires:
             - test
-          context: YaakXis # Specify the context at the workflow level
+          context: YaakXis
