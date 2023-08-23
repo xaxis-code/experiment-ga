@@ -1,18 +1,25 @@
 ---
 name: PR
 on:
+  workflow_call:
   pull_request:
     types:
       - synchronize
-env:
-  IMAGE_NAME: experimentga
 
 jobs:
   lint:
-    uses: ./.github/workflows/jobs/python-lint.yml
-    with:
-      python-version: 3.9
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/jobs/python-lint
+        with:
+          python-version: 3.9
     
   test:
     needs: lint
-    uses: ./.github/workflows/jobs/integration.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/get-pytest
+        with:
+          python-version: 3.9
+      - name: Run pytest
+        run: pytest
