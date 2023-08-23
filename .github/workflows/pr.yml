@@ -1,0 +1,18 @@
+---
+name: PR
+on:
+  pull_request:
+    types:
+      - synchronize
+env:
+  IMAGE_NAME: experimentga
+
+jobs:
+  lint:
+    uses: ./.github/workflows/jobs/python-lint.yml
+    with:
+      python-version: 3.9
+    
+  test:
+    needs: lint
+    uses: ./.github/workflows/jobs/integration.yml

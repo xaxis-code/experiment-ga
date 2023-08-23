@@ -1,0 +1,29 @@
+---
+name: On Merge
+on:
+  push:
+    branches:
+      - main
+      - master
+      - prod
+      - release
+      - dev
+      - demo
+env:
+  IMAGE_NAME: experimentga
+
+jobs:
+  lint:
+    uses: ./.github/workflows/jobs/python-lint.yml
+    with:
+      python-version: 3.9
+    
+  test:
+    needs: lint
+    uses: ./.github/workflows/jobs/integration.yml
+
+  build:
+    needs: test
+    uses: ./.github/workflows/jobs/docker-build.yml
+    secrets:
+      dockerhub-token: ${{ secrets.YAAKXIS_DOCKER_TOKEN }}
