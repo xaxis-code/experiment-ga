@@ -1,6 +1,6 @@
 ---
 name: 'Lint Python Code'
-description: 'using flask89 to lint my python code'
+description: 'using flask8 to lint my python code'
 inputs:
   python-version:
     description: "Python version we want to lint by"
