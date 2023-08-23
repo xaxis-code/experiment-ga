@@ -1,7 +1,7 @@
 # CircleCI configuration file
 version: 2.1
 
-deployment_branches: &deployment_branches '["master", "dev", "test", "demo", "release", "prod"]'
+deployment_branches: &deployment_branches '["master", "dev", "test", "demo", "release", "prod", "main"]'
 
 # Define reusable commands
 commands:
