@@ -26,12 +26,12 @@ executors:
 
 # Define jobs
 jobs:
-  lint:
-    executor: ubuntu-latest
-    steps:
-      - checkout
-      - install_flake8
-      - run: flake8 .
+  # lint:
+  #   executor: ubuntu-latest
+  #   steps:
+  #     - checkout
+  #     - install_flake8
+  #     - run: flake8 .
   test:
     executor: ubuntu-latest
     steps:
@@ -49,14 +49,14 @@ jobs:
       - setup_remote_docker # Enable Docker commands in the job
       - login_to_docker_hub
       - run: echo "Image name is ${IMAGE_NAME}"
-      - run: docker build --tag $REPO_NAME/$IMAGE_NAME:latest .
+      - run: docker build --tag $REPO_NAME/IMAGE_NAME:latest .
       - run: docker push $REPO_NAME/$IMAGE_NAME:latest
 
 # Define workflows
 workflows:
   ci:
     jobs:
-      - lint
+      - lint: *lint
       - test:
           requires:
             - lint

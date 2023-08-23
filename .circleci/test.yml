@@ -1,0 +1,11 @@
+commands:
+  install_flake8:
+    steps:
+      - run: pip install flake8
+
+lint:
+  executor: ubuntu-latest
+  steps:
+    - checkout
+    - install_flake8
+    - run: flake8 .
