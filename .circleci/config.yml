@@ -60,7 +60,7 @@ workflows:
     when:
       and:
         - not:
-            matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
+            matches: { pattern: *deployment_branches, value: $CIRCLE_BRANCH }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
@@ -73,7 +73,7 @@ workflows:
   on-merge:
     when:
       and:
-        - matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
+        - matches: { pattern: *deployment_branches, value: $CIRCLE_BRANCH }
         - not: 
             equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
     jobs:
