@@ -68,7 +68,7 @@ workflows:
         - not: << pipeline.parameters.run-schedule >>
         - not:
             or:
-              - equal: [ *ignore_branches, << pipeline.git.branch >> ]
+              - equal: [ *deployment_branches, << pipeline.git.branch >> ]
     jobs:
       - lint
       - test:
@@ -81,7 +81,7 @@ workflows:
       and:
         - not: << pipeline.parameters.run-schedule >>
         - or:
-            - equal: [ *ignore_branches, << pipeline.git.branch >> ]
+            - equal: [ *deployment_branches, << pipeline.git.branch >> ]
     jobs:
       - lint
       - test:
