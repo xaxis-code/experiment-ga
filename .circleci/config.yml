@@ -19,10 +19,15 @@ commands:
   login_to_docker_hub:
     steps:
       - run: docker login --username yaakxis --password $DOCKERHUB_TOKEN
+  setup_aws:
+    steps:
+      - run: |
+          aws configure set aws_access_key_id $ACCESS_KEY
+          aws configure set aws_secret_access_key $SECRET_KEY
+          aws configure set region $AWS_REGION
   login_to_ecr:
     steps:
       - run: |
-          aws configure set region $AWS_REGION
           ECR_PASSWORD=$(aws ecr get-login-password)
           echo $ECR_PASSWORD | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
@@ -60,6 +65,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job
+      - setup_aws
       - login_to_ecr
       - run: echo "Image name is ${IMAGE_NAME}"
       - run: docker build --tag $REPO_NAME/$IMAGE_NAME:latest .

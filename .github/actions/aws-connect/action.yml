@@ -12,6 +12,15 @@ inputs:
     description: "service required to login to"
     required: true
     default: ECR
+  aws-region:
+    description: "AWS region"
+    default: us-east-1
+  aws-account:
+    description: "AWS account id"
+    required: true
+  eks-cluster:
+    description: "AWS region"
+    default: us-east-1
 runs:
   using: 'composite'
   steps:
@@ -20,17 +29,19 @@ runs:
       run: |
         aws configure set aws_access_key_id ${{ inputs.access-key }}
         aws configure set aws_secret_access_key ${{ inputs.secret-key }}
+        aws configure set region ${{ inputs.aws-region }}
+    - name: Test AWS connectivity
+      shell: bash
+      run: |
+        aws sts get-caller-identity
     - name: Log in to Amazon ECR
       if: contains(inputs.aws-service, 'ECR')
       shell: bash
       run: |
-        echo "Logging in to Amazon ECR..."
         ECR_PASSWORD=$(aws ecr get-login-password)
-        echo "ECR password: $ECR_PASSWORD"
-        echo $ECR_PASSWORD | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-        echo "Logged in to Amazon ECR"
+        echo $ECR_PASSWORD | docker login --username AWS --password-stdin ${{ inputs.aws-account }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com
     - name: Log in to Amazon EKS
       if: contains(inputs.aws-service, 'EKS')
       shell: bash
       run: |
-        aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
+        aws eks update-kubeconfig --region ${{ inputs.aws-region }} --name ${{ inputs.eks-cluster }}

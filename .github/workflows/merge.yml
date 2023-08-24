@@ -32,6 +32,8 @@ jobs:
           access-key: ${{ secrets.ACCESS_KEY }}
           secret-key: ${{ secrets.SECRET_KEY }}
           aws-service: ECR
+          aws-region: ${{ env.AWSZONE }}
+          aws-account: ${{ env.ACCOUNTID }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
