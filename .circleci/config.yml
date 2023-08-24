@@ -1,0 +1,87 @@
+# CircleCI configuration file
+version: 2.1
+
+deployment_branches: &deployment_branches (master|dev|test|demo|release|prod|main)
+
+# Define reusable commands
+commands:
+  install_flake8:
+    steps:
+      - run: pip install flake8
+  install_dependencies:
+    steps:
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+  install_pytest:
+    steps:
+      - run: pip install pytest
+  login_to_docker_hub:
+    steps:
+      - run: docker login --username yaakxis --password $DOCKERHUB_TOKEN
+
+# Define reusable executors
+executors:
+  ubuntu-latest:
+    docker:
+      - image: cimg/python:3.9
+
+# Define jobs
+jobs:
+  lint:
+    executor: ubuntu-latest
+    steps:
+      - checkout
+      - install_flake8
+      - run: flake8 .
+  test:
+    executor: ubuntu-latest
+    steps:
+      - checkout
+      - install_dependencies
+      - install_pytest
+      - run: pytest
+  build:
+    executor: ubuntu-latest
+    environment:
+      IMAGE_NAME: "experiment-cci"
+      REPO_NAME: "yaakxis"
+    steps:
+      - checkout
+      - setup_remote_docker # Enable Docker commands in the job
+      - login_to_docker_hub
+      - run: echo "Image name is ${IMAGE_NAME}"
+      - run: docker build --tag $REPO_NAME/$IMAGE_NAME:latest .
+      - run: docker push $REPO_NAME/$IMAGE_NAME:latest
+
+# Define workflows
+workflows:
+  pr:
+    when:
+      and:
+        - not:
+            matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
+        - not: 
+            equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
+    jobs:
+      - lint
+      - test:
+          requires:
+            - lint
+
+
+  on-merge:
+    when:
+      and:
+        - matches: { pattern: *deployment_branches, value: << pipeline.git.branch >> }
+        - not: 
+            equal: [ "scheduled_pipeline", << pipeline.trigger_source >> ]
+    jobs:
+      - lint
+      - test:
+          requires:
+            - lint
+      - build:
+          requires:
+            - test
+          context: YaakXis

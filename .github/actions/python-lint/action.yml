@@ -1,0 +1,22 @@
+---
+name: 'Lint Python Code'
+description: 'using flask8 to lint my python code'
+inputs:
+  python-version:
+    description: "Python version we want to lint by"
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install flake8
+      run: pip install flake8
+      shell: bash
+      
+    - name: Run flake8
+      run: flake8 .
+      shell: bash
