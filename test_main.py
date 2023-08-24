@@ -13,7 +13,7 @@ def client():
 
 def test_hello(client):
     sets = []
-    time.sleep(120)
+    # time.sleep(120)
     for _ in range(3):
         response = client.get('/hello?name=your_name')
         data = json.loads(response.data)
