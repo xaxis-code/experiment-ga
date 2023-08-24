@@ -23,7 +23,8 @@ commands:
     steps:
       - run: |
           aws configure set region $AWS_REGION
-          aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+          ECR_PASSWORD=$(aws ecr get-login-password)
+          echo $ECR_PASSWORD | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
 # Define reusable executors
 executors:
