@@ -1,4 +1,5 @@
 import pytest
+import time
 from flask import json
 from main import app
 
@@ -12,6 +13,7 @@ def client():
 
 def test_hello(client):
     sets = []
+    time.sleep(120)
     for _ in range(3):
         response = client.get('/hello?name=your_name')
         data = json.loads(response.data)

@@ -19,6 +19,11 @@ commands:
   login_to_docker_hub:
     steps:
       - run: docker login --username yaakxis --password $DOCKERHUB_TOKEN
+  login_to_ecr:
+    steps:
+      - run: |
+          aws configure set region $AWS_REGION
+          aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
 # Define reusable executors
 executors:
@@ -45,14 +50,16 @@ jobs:
     executor: ubuntu-latest
     environment:
       IMAGE_NAME: "experiment-cci"
-      REPO_NAME: "yaakxis"
+      REPO_NAME: "cicd"
+      AWS_ACCOUNT_ID: "952256534162"
+      AWS_REGION: "us-east-1"
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job
       - login_to_docker_hub
       - run: echo "Image name is ${IMAGE_NAME}"
       - run: docker build --tag $REPO_NAME/$IMAGE_NAME:latest .
-      - run: docker push $REPO_NAME/$IMAGE_NAME:latest
+      - run: docker push $REPO_NAME/$IMAGE_NAME:cci
 
 # Define workflows
 workflows:
