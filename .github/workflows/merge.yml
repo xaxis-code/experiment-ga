@@ -13,7 +13,7 @@ env:
   ACCOUNTID: 952256534162
   IMAGE_NAME: experiment-ga
   AWSZONE: us-east-1
-  REPO_NAME: cicd
+  REPO_NAME: $ACCOUNTID.dkr.ecr.$AWSZONE.amazonaws.com
 
 jobs:
   pr:

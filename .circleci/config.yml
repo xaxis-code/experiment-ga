@@ -58,10 +58,10 @@ jobs:
   build:
     executor: build-machine
     environment:
-      IMAGE_NAME: "experiment-cci"
-      REPO_NAME: "cicd"
+      IMAGE_NAME: "experiment-ga"
       AWS_ACCOUNT_ID: "952256534162"
       AWS_REGION: "us-east-1"
+      REPO_NAME: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job
@@ -85,7 +85,6 @@ workflows:
       - test:
           requires:
             - lint
-
 
   on-merge:
     when:
