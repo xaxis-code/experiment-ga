@@ -30,6 +30,9 @@ executors:
   ubuntu-latest:
     docker:
       - image: cimg/python:3.9
+  build-machine:
+    docker:
+      - image: cimg/aws:2023.08
 
 # Define jobs
 jobs:
@@ -47,7 +50,7 @@ jobs:
       - install_pytest
       - run: pytest
   build:
-    executor: ubuntu-latest
+    executor: build-machine
     environment:
       IMAGE_NAME: "experiment-cci"
       REPO_NAME: "cicd"
