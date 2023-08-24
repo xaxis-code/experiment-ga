@@ -24,7 +24,7 @@ runs:
       if: contains(inputs.aws-service, 'ECR')
       shell: bash
       run: |
-        echo "ECR_PASSWORD=$(aws ecr get-login-password)" >> $GITHUB_ENV
+        ECR_PASSWORD=$(aws ecr get-login-password)
         echo $ECR_PASSWORD | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
     - name: Log in to Amazon EKS
       if: contains(inputs.aws-service, 'EKS')
