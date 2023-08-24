@@ -22,9 +22,11 @@ runs:
         aws configure set aws_secret_access_key ${{ inputs.secret-key }}
     - name: Log in to Amazon ECR
       if: contains(inputs.aws-service, 'ECR')
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      shell: bash
+      run: |
+        aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
     - name: Log in to Amazon EKS
       if: contains(inputs.aws-service, 'EKS')
-      id: login-eks
-      uses: aws-actions/amazon-eks-login@v1
+      shell: bash
+      run: |
+        aws eks update-kubeconfig --region $AWS_REGION --name $EKS_CLUSTER_NAME
