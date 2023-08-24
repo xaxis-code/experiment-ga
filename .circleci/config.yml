@@ -61,7 +61,7 @@ jobs:
       IMAGE_NAME: "experiment-ga"
       AWS_ACCOUNT_ID: "952256534162"
       AWS_REGION: "us-east-1"
-      REPO_NAME: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      REPO_NAME: "952256534162.dkr.ecr.us-east-1.amazonaws.com/experiment-ga"
     steps:
       - checkout
       - setup_remote_docker # Enable Docker commands in the job

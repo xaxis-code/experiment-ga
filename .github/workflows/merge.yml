@@ -39,4 +39,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.ACCOUNTID }}.dkr.ecr.${{ env.AWSZONE }}.amazonaws.com/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:ga
+          tags: ${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:ga
