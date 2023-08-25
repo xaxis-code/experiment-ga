@@ -37,3 +37,6 @@ jobs:
          password: ${{ secrets.ECR_DOCKER_LOGIN_PWD }}
       volumes:
         - my_docker_volume:/volume_mount
+    steps:
+      - name: test
+        run: ls
