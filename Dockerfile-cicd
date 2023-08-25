@@ -4,10 +4,10 @@ FROM ubuntu:jammy AS packages
 RUN apt update \
  && apt upgrade -y
 RUN apt install -y git jq docker.io software-properties-common lsb-release zip wget curl
-RUN add-apt-repository ppa:deadsnakes/ppa \
- && DEBIAN_FRONTEND=noninteractive apt install -y python3.9 python3-pip python3-jmespath \
- && apt install -y nodejs npm
-RUN apt install -y vim less groff bash-completion
+# RUN add-apt-repository ppa:deadsnakes/ppa \
+#  && DEBIAN_FRONTEND=noninteractive apt install -y python3.9 python3-pip python3-jmespath
+# RUN apt install -y nodejs npm
+# RUN apt install -y vim less groff bash-completion
 
 RUN git version
 

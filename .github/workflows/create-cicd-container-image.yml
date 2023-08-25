@@ -6,8 +6,8 @@ on:
     branches: ['main']
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  DOCKER_REGISTRY: ghcr.io
+  IMAGE_REPO: ${{ github.repository }}
 
 jobs:
   build-and-push-image:
@@ -27,7 +27,8 @@ jobs:
         run: echo ${GH_TOKEN} | docker login ${GH_REGISTRY} --username ${GH_USERNAME} --password-stdin
       - name: Build and push Docker image
         env:
-          GH_REGISTRY: ${{ env.REGISTRY }}
+          GH_REGISTRY: ${{ env.DOCKER_REGISTRY }}
+          IMAGE_REPO: ${{ env.IMAGE_REPO }}
         run: |
           docker build -t cicd -f Dockerfile-cicd .
           
@@ -36,8 +37,8 @@ jobs:
           GIT_HASH=$( git rev-parse --short HEAD )
           IMAGE_TAG="${TODAY}-${BRANCH_ID}${GIT_HASH}"
           IMAGE_TAG_ALIAS=v1
-          IMAGE_NAME=${GH_REGISTRY}/cicd:${IMAGE_TAG}
-          IMAGE_NAME_ALIAS=${GH_REGISTRY}/cicd:${IMAGE_TAG_ALIAS}
+          IMAGE_NAME=${GH_REGISTRY}/${IMAGE_REPO}:${IMAGE_TAG}
+          IMAGE_NAME_ALIAS=${GH_REGISTRY}/${IMAGE_REPO}:${IMAGE_TAG_ALIAS}
           
           docker tag cicd "${IMAGE_NAME}"
           docker tag cicd "${IMAGE_NAME_ALIAS}"
