@@ -27,3 +27,13 @@ jobs:
           python-version: 3.9
       - name: Run pytest
         run: pytest
+
+  run_in_container:
+    needs: scheduled_job
+    container:
+      image: 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb
+      credentials:
+         username: AWS
+         password: ${{ secrets.ECR_DOCKER_LOGIN_PWD }}
+      volumes:
+        - my_docker_volume:/volume_mount

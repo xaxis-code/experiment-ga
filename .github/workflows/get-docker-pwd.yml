@@ -1,0 +1,16 @@
+name: DOCKER
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # every 10 minutes
+
+  get_pwd:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get_ecr_pwd
+        name: Get ECR Login Password
+        run: echo "ECR_DOCKER_LOGIN_PWD=$(aws ecr get-login-password)" >> "$GITHUB_ENV"
+        env:
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_KEY }}
+
