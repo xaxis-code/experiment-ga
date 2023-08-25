@@ -9,7 +9,10 @@ jobs:
     steps:
       - id: get_ecr_pwd
         name: Get ECR Login Password
-        run: echo "ECR_DOCKER_LOGIN_PWD=$(aws ecr get-login-password)" >> "$GITHUB_ENV"
+        run: |
+          ECR_DOCKER_LOGIN_PWD=$(aws ecr get-login-password)
+          echo "::add-mask::$ECR_DOCKER_LOGIN_PWD"
+          echo "ECR_DOCKER_LOGIN_PWD=$ECR_DOCKER_LOGIN_PWD" >> "$GITHUB_ENV"
         env:
           AWS_REGION: us-east-1
           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
