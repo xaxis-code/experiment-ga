@@ -3,6 +3,7 @@ on:
   schedule:
     - cron: '*/10 * * * *'  # every 10 minutes
 
+jobs:
   get_pwd:
     runs-on: ubuntu-latest
     steps:
