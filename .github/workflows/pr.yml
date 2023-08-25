@@ -8,7 +8,7 @@ on:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  CICD_IMAGE: cicd:v1
+  CICD_IMAGE: xaxis-code/cicd:v1
 
 jobs:
   lint:
@@ -35,7 +35,7 @@ jobs:
   run_in_container:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/cicd:v1 # ${{ env.REGISTRY }}/${{ env.CICD_IMAGE }}
+      image: ghcr.io/xaxis-code/cicd:v1 # ${{ env.REGISTRY }}/${{ env.CICD_IMAGE }}
       credentials:
          username: ${{ github.actor }}
          password: ${{ secrets.GITHUB_TOKEN }}

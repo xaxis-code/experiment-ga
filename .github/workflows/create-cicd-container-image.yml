@@ -7,7 +7,7 @@ on:
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  IMAGE_REPO: ${{ github.repository }}
+  IMAGE_REPO: xaxis-code/cicd # ${{ github.repository }}
 
 jobs:
   build-and-push-image:
@@ -35,12 +35,15 @@ jobs:
           TODAY=$( date '+%Y.%m.%d' )
           BRANCH_ID="test-"
           GIT_HASH=$( git rev-parse --short HEAD )
+
           IMAGE_TAG="${TODAY}-${BRANCH_ID}${GIT_HASH}"
-          IMAGE_TAG_ALIAS=v1
           IMAGE_NAME=${GH_REGISTRY}/${IMAGE_REPO}:${IMAGE_TAG}
+
+          IMAGE_TAG_ALIAS=v1
           IMAGE_NAME_ALIAS=${GH_REGISTRY}/${IMAGE_REPO}:${IMAGE_TAG_ALIAS}
           
           docker tag cicd "${IMAGE_NAME}"
           docker tag cicd "${IMAGE_NAME_ALIAS}"
           
           docker push "${IMAGE_NAME}"
+          docker push "${IMAGE_NAME_ALIAS}"
