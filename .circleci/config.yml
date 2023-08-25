@@ -65,6 +65,11 @@ jobs:
       - install_pytest
       - run: /home/devops/.local/bin/pytest
 
+  long-test:
+    executor: ubuntu-latest
+    steps:
+      - run: sleep 120
+
   build:
     executor: build-machine
     environment:
@@ -112,3 +117,12 @@ workflows:
           requires:
             - test
           context: YaakXis
+
+  nightly-tests:
+    when: 
+      and:
+        - equal: [ daily_build, << pipeline.schedule.name >> ]
+        - equal: [ "scheduled_pipeline", << pipeline.trigger_source >>]
+    jobs:
+      - test
+      - long-test
