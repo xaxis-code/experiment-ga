@@ -6,6 +6,10 @@ on:
     types:
       - synchronize
 
+env:
+  REGISTRY: ghcr.io
+  CICD_IMAGE: cicd:v1
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -31,7 +35,7 @@ jobs:
   run_in_container:
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.REGISTRY }}/cicd:v1
+      image: ${{ env.REGISTRY }}/${{ env.CICD_IMAGE }}
       credentials:
          username: ${{ github.actor }}
          password: ${{ secrets.GITHUB_TOKEN }}
