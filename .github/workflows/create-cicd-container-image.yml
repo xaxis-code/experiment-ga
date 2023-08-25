@@ -1,0 +1,48 @@
+#
+name: Create and publish a Docker image
+
+on:
+  push:
+    branches: ['release']
+
+# Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: cicd
+
+# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
+    permissions:
+      contents: read
+      packages: write
+      # 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log in to the Container registry
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REGISTRY: ${{ env.REGISTRY }}
+          GH_USERNAME: ${{ github.actor }}
+        run: echo ${GH_TOKEN} | docker login ${GH_REGISTRY} --username ${GH_USERNAME} --password-stdin
+      - name: Build and push Docker image
+        env:
+          GH_REGISTRY: ${{ env.REGISTRY }}
+        run: |
+          docker build -t cicd -f Dockerfile-cicd .
+          
+          TODAY=$( date '+%Y.%m.%d' )
+          BRANCH_ID="test-"
+          GIT_HASH=$( git rev-parse --short HEAD )
+          IMAGE_TAG="${TODAY}-${BRANCH_ID}${GIT_HASH}"
+          IMAGE_TAG_ALIAS=v1
+          IMAGE_NAME=${GH_REGISTRY}/cicd:${IMAGE_TAG}
+          IMAGE_NAME_ALIAS=${GH_REGISTRY}/cicd:${IMAGE_TAG_ALIAS}
+          
+          docker tag cicd "${IMAGE_NAME}"
+          docker tag cicd "${IMAGE_NAME_ALIAS}"
+          
+          docker push "${IMAGE_NAME}"

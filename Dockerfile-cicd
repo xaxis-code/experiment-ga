@@ -1,0 +1,63 @@
+FROM ubuntu:jammy AS packages
+
+# install utilities
+RUN apt update \
+ && apt upgrade -y
+RUN apt install -y git jq docker.io software-properties-common lsb-release zip wget curl
+RUN add-apt-repository ppa:deadsnakes/ppa \
+ && DEBIAN_FRONTEND=noninteractive apt install -y python3.9 python3-pip python3-jmespath \
+ && apt install -y nodejs npm
+RUN apt install -y vim less groff bash-completion
+
+RUN git version
+
+# install AWS CLI
+RUN wget https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -nv -O awscliv2.zip \
+ && unzip awscliv2.zip \
+ && ./aws/install \
+ && rm awscliv2.zip \
+ && rm -fr ./aws
+
+# install terraform version manager
+RUN curl -L https://raw.githubusercontent.com/warrensbox/terraform-switcher/release/install.sh -o install-tfswitch.sh \
+ && bash install-tfswitch.sh \
+ && rm install-tfswitch.sh
+
+# install golang
+ENV PATH=/usr/local/go/bin:$PATH
+RUN wget -nv https://go.dev/dl/go1.20.3.linux-amd64.tar.gz \
+ && tar -C /usr/local -xzf go1.20.3.linux-amd64.tar.gz \
+ && rm -fr go1.20.3.linux-amd64.tar.gz \
+ && go version
+
+# create user/group
+RUN groupadd gdevops \
+ && useradd -ms /bin/bash -g gdevops -G docker devops
+
+# install serverless framework
+RUN mkdir /home/devops/.npm-global \
+ && npm config set prefix /home/devops/.npm-global \
+ && npm install -g serverless@1.36.3
+
+# install terraform
+USER devops:gdevops
+RUN PATH="~/.local/bin:$PATH" \
+ && tfswitch 0.14.6 \
+ && mkdir -p /home/devops/.terraform.d/plugin-cache
+
+# bash and ssh
+#RUN mv /home/devops/cli/bashrc /home/devops/.bashrc \
+#RUN mkdir -p --mode=700 /home/devops/.ssh \
+# && cp --preserve=mode /home/devops/cli/ssh.conf /home/devops/.ssh/config
+
+# install custom CLI code
+COPY --chown=devops:gdevops ./src /home/devops/cli
+
+# cleanup
+USER root
+RUN rm -fr /tmp/*
+
+# final
+USER devops
+ENV TF_PLUGIN_CACHE_DIR="/home/devops/.terraform.d/plugin-cache"
+WORKDIR /devops-host

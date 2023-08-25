@@ -31,10 +31,10 @@ jobs:
   run_in_container:
     runs-on: ubuntu-latest
     container:
-      image: 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb
+      image: ${{ env.REGISTRY }}/cicd:v1
       credentials:
-         username: AWS
-         password: ${{ secrets.ECR_DOCKER_LOGIN_PWD }}
+         username: ${{ github.actor }}
+         password: ${{ secrets.GITHUB_TOKEN }}
       volumes:
         - my_docker_volume:/volume_mount
     steps:
