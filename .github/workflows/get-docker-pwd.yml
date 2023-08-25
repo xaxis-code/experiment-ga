@@ -1,4 +1,4 @@
-name: DOCKER
+name: Get Docker Pwd every 10 min and store in secret
 on:
   schedule:
     - cron: '*/10 * * * *'  # every 10 minutes
