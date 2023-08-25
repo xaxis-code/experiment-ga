@@ -35,7 +35,7 @@ jobs:
   run_in_container:
     runs-on: ubuntu-latest
     container:
-      image: ${{ env.REGISTRY }}/${{ env.CICD_IMAGE }}
+      image: ghcr.io/cicd:v1 # ${{ env.REGISTRY }}/${{ env.CICD_IMAGE }}
       credentials:
          username: ${{ github.actor }}
          password: ${{ secrets.GITHUB_TOKEN }}
