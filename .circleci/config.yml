@@ -78,7 +78,7 @@ jobs:
       - setup_aws
       - login_to_ecr
       - run: echo "Image name is ${IMAGE_NAME}"
-      - run: docker build --tag $REPO_NAME/$IMAGE_NAME:latest .
+      - run: docker build --tag $REPO_NAME/$IMAGE_NAME:cci .
       - run: docker push $REPO_NAME/$IMAGE_NAME:cci
 
 # Define workflows
