@@ -3,6 +3,11 @@ version: 2.1
 
 deployment_branches: &deployment_branches (master|dev|test|demo|release|prod|main)
 
+parameters:
+  build-image:
+    type: string
+    default: "952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb"
+
 # Define reusable commands
 commands:
   install_flake8:
@@ -39,7 +44,9 @@ executors:
   build-machine:
     docker:
       - image: cimg/aws:2023.08
-
+  xaxis-cicd:
+    docker:
+      - image: << pipeline.parameters.build-image >
 # Define jobs
 jobs:
   lint:
@@ -48,13 +55,24 @@ jobs:
       - checkout
       - install_flake8
       - run: flake8 .
+  # test:
+  #   executor: ubuntu-latest
+  #   steps:
+  #     - checkout
+  #     - install_dependencies
+  #     - install_pytest
+  #     - run: pytest
   test:
-    executor: ubuntu-latest
+    executor: xaxis-cicd
+    aws_auth:
+        aws_access_key_id: $ACCESS_KEY  # can specify string literal values
+        aws_secret_access_key: $SECRET_KEY  # or project UI envar reference
     steps:
       - checkout
       - install_dependencies
       - install_pytest
       - run: pytest
+
   build:
     executor: build-machine
     environment:
@@ -97,6 +115,7 @@ workflows:
       - test:
           requires:
             - lint
+          context: YaakXis
       - build:
           requires:
             - test
