@@ -51,7 +51,7 @@ RUN PATH="~/.local/bin:$PATH" \
 # && cp --preserve=mode /home/devops/cli/ssh.conf /home/devops/.ssh/config
 
 # install custom CLI code
-COPY --chown=devops:gdevops ./src /home/devops/cli
+# COPY --chown=devops:gdevops ./src /home/devops/cli
 
 # cleanup
 USER root
