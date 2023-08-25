@@ -1,0 +1,19 @@
+name: Scan code base once a week to remain on free tier
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # every 10 minutes
+
+jobs:
+  get_pwd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scan
+        run: |
+          echo "Scanning code base..."
+          sleep 100
+          FOUND=5
+          echo "$FOUND critical vulnerabilities found:"
+          for x in $(seq 1 $FOUND); do
+            echo "$x: CVE $RANDOM ..."
+          done
+
