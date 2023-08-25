@@ -46,8 +46,8 @@ executors:
     docker:
       - image: << pipeline.parameters.build-image >>
         aws_auth:
-            aws_access_key_id: $ACCESS_KEY  # can specify string literal values
-            aws_secret_access_key: $SECRET_KEY  # or project UI envar reference
+            aws_access_key_id: $ACCESS_KEY
+            aws_secret_access_key: $SECRET_KEY
 # Define jobs
 jobs:
   lint:
@@ -56,20 +56,14 @@ jobs:
       - checkout
       - install_flake8
       - run: flake8 .
-  # test:
-  #   executor: ubuntu-latest
-  #   steps:
-  #     - checkout
-  #     - install_dependencies
-  #     - install_pytest
-  #     - run: pytest
+
   test:
     executor: xaxis-cicd
     steps:
       - checkout
       - install_dependencies
       - install_pytest
-      - run: pytest
+      - run: /home/devops/.local/bin/pytest
 
   build:
     executor: build-machine
