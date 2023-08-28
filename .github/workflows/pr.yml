@@ -78,4 +78,4 @@ jobs:
           aws-account: ${{ env.ACCOUNTID }}
       - name: Run tests in Docker container
         run: |
-          docker run -v ${{ github.workspace }}:/workspace -w /workspace 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb /bin/bash -c "pip install pytest && /home/devops/.local/bin/pytest"
+          docker run -v ${{ github.workspace }}:/workspace -w /workspace 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb /bin/bash -c "pip install pytest -r requirements.txt && /home/devops/.local/bin/pytest"
