@@ -63,12 +63,19 @@ jobs:
   test-v2:
     needs: 
       - lint
-      # Since we run setup_aws we do not need to run the connect-aws actions again (I hope :) )
-      - setup_aws
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Connect to AWS
+        uses: ./.github/actions/aws-connect
+        id: connect_aws
+        with:
+          access-key: ${{ secrets.ACCESS_KEY }}
+          secret-key: ${{ secrets.SECRET_KEY }}
+          aws-service: ECR
+          aws-region: ${{ env.AWSZONE }}
+          aws-account: ${{ env.ACCOUNTID }}
       - name: Run tests in Docker container
         run: |
           docker run -v ${{ github.workspace }}:/workspace -w /workspace 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb /bin/bash -c "pip install pytest && /home/devops/.local/bin/pytest"
