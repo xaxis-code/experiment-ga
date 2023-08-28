@@ -40,6 +40,9 @@ jobs:
           aws-service: ECR
           aws-region: ${{ env.AWSZONE }}
           aws-account: ${{ env.ACCOUNTID }}
+      - name: print outputs
+        shell: bash
+        run: echo "${{ steps.connect_aws.outputs.ecr_password }}"
 
   test:
     needs: lint
@@ -48,7 +51,7 @@ jobs:
       image: 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb
       credentials:
         username: AWS
-        password: ${{ needs.setup_aws.outputs.ecr_password }}
+        password: ${{ jobs.setup_aws.outputs.ecr_password }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
