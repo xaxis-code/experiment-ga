@@ -100,6 +100,7 @@ workflows:
       - test:
           requires:
             - lint
+          context: YaakXis
 
   on-merge:
     when:
@@ -121,8 +122,22 @@ workflows:
   nightly-tests:
     when: 
       and:
-        - equal: [ daily_build, << pipeline.schedule.name >> ]
+        - equal: [ "nightly", << pipeline.schedule.name >> ]
         - equal: [ "scheduled_pipeline", << pipeline.trigger_source >>]
     jobs:
-      - test
-      - long-test
+      - test:
+          name: test-1
+          context: YaakXis
+      - long-test:
+          name: lt-1
+          context: YaakXis
+      - long-test:
+          name: lt-2
+          requires:
+            - long-test
+          context: YaakXis
+      - long-test:
+          name: test-2
+          context: YaakXis
+          requires:
+            - test
