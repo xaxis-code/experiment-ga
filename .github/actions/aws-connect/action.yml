@@ -21,6 +21,11 @@ inputs:
   eks-cluster:
     description: "AWS region"
     default: us-east-1
+outputs:
+  ecr_password:
+    description: "ECR password"
+    value: ${{ steps.ecr-login.outputs.ecr_password }}
+
 runs:
   using: 'composite'
   steps:
@@ -35,10 +40,12 @@ runs:
       run: |
         aws sts get-caller-identity
     - name: Log in to Amazon ECR
+      id: ecr-login
       if: contains(inputs.aws-service, 'ECR')
       shell: bash
       run: |
         ECR_PASSWORD=$(aws ecr get-login-password)
+        echo "ecr_password=$ECR_PASSWORD" >> $GITHUB_OUTPUT
         echo $ECR_PASSWORD | docker login --username AWS --password-stdin ${{ inputs.aws-account }}.dkr.ecr.${{ inputs.aws-region }}.amazonaws.com
     - name: Log in to Amazon EKS
       if: contains(inputs.aws-service, 'EKS')

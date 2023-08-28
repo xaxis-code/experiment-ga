@@ -1,0 +1,32 @@
+---
+name: Nightly integration tests
+on:
+  schedule:
+    - cron: '0 23 * * *'
+
+jobs:
+  pr-1:
+    uses: ./.github/workflows/pr.yml
+
+  long-test-1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: long-test
+        shell: bash
+        run: sleep 600
+  
+  long-test-2:
+    needs: pr-1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: long-test
+        shell: bash
+        run: sleep 600
+
+  pr-2:
+    needs: long-test-1
+    uses: ./.github/workflows/pr.yml

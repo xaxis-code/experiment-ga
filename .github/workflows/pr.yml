@@ -9,6 +9,10 @@ on:
 env:
   DOCKER_REGISTRY: ghcr.io
   CICD_IMAGE: xaxis-code/cicd:v1
+  ACCOUNTID: 952256534162
+  IMAGE_NAME: experiment-ga
+  AWSZONE: us-east-1
+  REPO_NAME: 952256534162.dkr.ecr.us-east-1.amazonaws.com
 
 jobs:
   lint:
@@ -20,9 +24,33 @@ jobs:
         with:
           python-version: 3.9
     
-  test:
-    needs: lint
+  setup_aws:
     runs-on: ubuntu-latest
+    outputs:
+      ecr_password: ${{ steps.connect_aws.outputs.ecr_password }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Connect to AWS
+        uses: ./.github/actions/aws-connect
+        id: connect_aws
+        with:
+          access-key: ${{ secrets.ACCESS_KEY }}
+          secret-key: ${{ secrets.SECRET_KEY }}
+          aws-service: ECR
+          aws-region: ${{ env.AWSZONE }}
+          aws-account: ${{ env.ACCOUNTID }}
+
+  test:
+    needs: 
+      - lint
+      - setup_aws
+    runs-on: ubuntu-latest
+    container:
+      image: 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.28-yaakov.yekezkel-4194fc1
+      credentials:
+        username: AWS
+        password: ${{ needs.setup_aws.outputs.ecr_password }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -32,15 +60,22 @@ jobs:
       - name: Run pytest
         run: pytest
 
-  run_in_container:
+  test-v2:
+    needs: 
+      - lint
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/xaxis-code/cicd:v1 # ${{ env.REGISTRY }}/${{ env.CICD_IMAGE }}
-      credentials:
-         username: ${{ github.actor }}
-         password: ${{ secrets.GITHUB_TOKEN }}
-      volumes:
-        - my_docker_volume:/volume_mount
     steps:
-      - name: test
-        run: ls
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Connect to AWS
+        uses: ./.github/actions/aws-connect
+        id: connect_aws
+        with:
+          access-key: ${{ secrets.ACCESS_KEY }}
+          secret-key: ${{ secrets.SECRET_KEY }}
+          aws-service: ECR
+          aws-region: ${{ env.AWSZONE }}
+          aws-account: ${{ env.ACCOUNTID }}
+      - name: Run tests in Docker container
+        run: |
+          docker run -v ${{ github.workspace }}:/workspace -w /workspace 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb /bin/bash -c "pip install pytest -r requirements.txt && /home/devops/.local/bin/pytest"
