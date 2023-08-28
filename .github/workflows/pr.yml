@@ -47,7 +47,7 @@ jobs:
       - setup_aws
     runs-on: ubuntu-latest
     container:
-      image: 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.24-oliver-e6a30eb
+      image: 952256534162.dkr.ecr.us-east-1.amazonaws.com/cicd:2023.08.28-yaakov.yekezkel-4194fc1
       credentials:
         username: AWS
         password: ${{ needs.setup_aws.outputs.ecr_password }}
