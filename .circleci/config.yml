@@ -68,7 +68,7 @@ jobs:
   long-test:
     executor: ubuntu-latest
     steps:
-      - run: sleep 120
+      - run: sleep 600
 
   build:
     executor: build-machine
@@ -131,13 +131,13 @@ workflows:
       - long-test:
           name: lt-1
           context: YaakXis
-      - long-test:
-          name: lt-2
+      - test:
+          name: test-2
           requires:
             - long-test
           context: YaakXis
       - long-test:
-          name: test-2
+          name: long-test-2
           context: YaakXis
           requires:
             - test
