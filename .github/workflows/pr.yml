@@ -9,6 +9,10 @@ on:
 env:
   DOCKER_REGISTRY: ghcr.io
   CICD_IMAGE: xaxis-code/cicd:v1
+  ACCOUNTID: 952256534162
+  IMAGE_NAME: experiment-ga
+  AWSZONE: us-east-1
+  REPO_NAME: 952256534162.dkr.ecr.us-east-1.amazonaws.com
 
 jobs:
   lint:
