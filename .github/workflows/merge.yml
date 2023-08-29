@@ -18,6 +18,7 @@ env:
 jobs:
   pr:
     uses: ./.github/workflows/pr.yml
+    secrets: inherit
 
   build:
     needs: pr
