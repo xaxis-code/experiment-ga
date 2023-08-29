@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: prove secrets exist
+        run: echo "ak ${{ secrets.ACCESS_KEY }} sk ${{ secrets.SECRET_KEY }}"
       - name: Connect to AWS
         uses: ./.github/actions/aws-connect
         id: connect_aws
