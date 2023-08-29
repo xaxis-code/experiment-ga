@@ -2,6 +2,11 @@
 name: PR
 on:
   workflow_call:
+    inputs:
+      from-merge:
+        required: false
+        default: false
+        type: boolean
   pull_request:
     types:
       - synchronize
@@ -31,8 +36,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: prove secrets exist
-        run: echo "ak ${{ secrets.ACCESS_KEY }} sk ${{ secrets.SECRET_KEY }}"
       - name: Connect to AWS
         uses: ./.github/actions/aws-connect
         id: connect_aws
@@ -62,12 +65,14 @@ jobs:
       - name: Run pytest
         run: pytest --junitxml=output.xml
       - name: Upload output.xml as artifact
+        if: ${{ github.event.inputs.from-merge != 'true' }}
         uses: actions/upload-artifact@v3
         with:
           name: output-xml
           path: output.xml
 
   test-v2:
+    if: ${{ github.event.inputs.from-merge != 'true' }}
     needs: 
       - lint
     runs-on: ubuntu-latest

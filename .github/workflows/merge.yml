@@ -19,6 +19,8 @@ jobs:
   pr:
     uses: ./.github/workflows/pr.yml
     secrets: inherit
+    with:
+      from-merge: true
 
   build:
     needs: pr
