@@ -65,14 +65,14 @@ jobs:
       - name: Run pytest
         run: pytest --junitxml=output.xml
       - name: Upload output.xml as artifact
-        if: ${{ github.event.inputs.from-merge != 'true' }}
+        if: ${{ github.event.inputs.from-merge == false }}
         uses: actions/upload-artifact@v3
         with:
           name: output-xml
           path: output.xml
 
   test-v2:
-    if: ${{ github.event.inputs.from-merge != 'true' }}
+    if: ${{ github.event.inputs.from-merge == false }}
     needs: 
       - lint
     runs-on: ubuntu-latest
