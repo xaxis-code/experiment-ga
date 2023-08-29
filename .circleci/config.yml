@@ -134,10 +134,10 @@ workflows:
       - test:
           name: test-2
           requires:
-            - long-test
+            - lt-1
           context: YaakXis
       - long-test:
           name: long-test-2
           context: YaakXis
           requires:
-            - test
+            - test-1
