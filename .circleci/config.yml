@@ -63,7 +63,10 @@ jobs:
       - checkout
       - install_dependencies
       - install_pytest
-      - run: /home/devops/.local/bin/pytest
+      - run: /home/devops/.local/bin/pytest --junitxml=output.xml
+      - store_artifacts:
+          path: output.xml
+          destination: output-xml
 
   long-test:
     executor: ubuntu-latest

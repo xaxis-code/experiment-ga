@@ -58,7 +58,12 @@ jobs:
         with:
           python-version: 3.9
       - name: Run pytest
-        run: pytest
+        run: pytest --junitxml=output.xml
+      - name: Upload output.xml as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-xml
+          path: output.xml
 
   test-v2:
     needs: 
