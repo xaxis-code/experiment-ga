@@ -6,7 +6,7 @@ inputs:
     description: "AWS access-key"
     required: true
   secret-key:
-    description: "AWS access-key"
+    description: "AWS secret-key"
     required: true
   aws-service:
     description: "service required to login to"
@@ -32,10 +32,8 @@ runs:
     - name: Configure AWS CLI
       shell: bash
       run: |
-        # aws configure set aws_access_key_id ${{ inputs.access-key }}
-        # aws configure set aws_secret_access_key ${{ inputs.secret-key }}
-        aws configure set aws_access_key_id ${{ secrets.ACCESS_KEY }}
-        aws configure set aws_secret_access_key ${{ secrets.SECRET_KEY }}
+        aws configure set aws_access_key_id ${{ inputs.access-key }}
+        aws configure set aws_secret_access_key ${{ inputs.secret-key }}
         aws configure set region ${{ inputs.aws-region }}
     - name: Test AWS connectivity
       shell: bash
