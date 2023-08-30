@@ -4,7 +4,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: jenkins/jenkinsfile-runner
+      image: jenkins/jenkinsfile-runner:adoptopenjdk-11-hotspot
       env:
         ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
