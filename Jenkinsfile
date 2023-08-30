@@ -37,8 +37,8 @@ pipeline {
                         echo $ECR_PASSWORD | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
                     '''
                     sh 'echo "Image name is ${IMAGE_NAME}"'
-                    sh 'docker build --tag $REPO_NAME/$IMAGE_NAME:cci .'
-                    sh 'docker push $REPO_NAME/$IMAGE_NAME:cci'
+                    sh 'docker build --tag $REPO_NAME/$IMAGE_NAME:jenkins .'
+                    sh 'docker push $REPO_NAME/$IMAGE_NAME:jenkins'
                 }
             }
         }
