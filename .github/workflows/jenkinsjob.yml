@@ -9,4 +9,4 @@ jobs:
       uses: actions/checkout@v2
     - name: Run Jenkinsfile
       run: |
-        docker run --rm -v $(pwd)/Jenkinsfile:/workspace/Jenkinsfile jenkins/jenkinsfile-runner -e ACCESS_KEY ${{ secrets.ACCESS_KEY }} -e SECRET_KEY ${{ secrets.SECRET_KEY }}
+        docker run --rm -v  -e ACCESS_KEY ${{ secrets.ACCESS_KEY }} -e SECRET_KEY ${{ secrets.SECRET_KEY }} $(pwd)/Jenkinsfile:/workspace/Jenkinsfile jenkins/jenkinsfile-runner
