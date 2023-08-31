@@ -6,7 +6,10 @@ on:
 
 jobs:
   pr-1:
+    secrets: inherit
     uses: ./.github/workflows/pr.yml
+    with:
+      from-merge: true
 
   long-test-1:
     runs-on: ubuntu-latest
@@ -29,4 +32,5 @@ jobs:
 
   pr-2:
     needs: long-test-1
+    secrets: inherit
     uses: ./.github/workflows/pr.yml
