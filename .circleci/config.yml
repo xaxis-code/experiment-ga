@@ -71,7 +71,7 @@ jobs:
   long-test:
     executor: ubuntu-latest
     steps:
-      - run: sleep 600
+      - run: sleep 500
 
   build:
     executor: build-machine

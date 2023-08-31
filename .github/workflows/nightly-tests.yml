@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v3
       - name: long-test
         shell: bash
-        run: sleep 600
+        run: sleep 500
   
   long-test-2:
     needs: pr-1
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v3
       - name: long-test
         shell: bash
-        run: sleep 600
+        run: sleep 500
 
   pr-2:
     needs: long-test-1
