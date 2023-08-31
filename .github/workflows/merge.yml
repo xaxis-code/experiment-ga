@@ -1,6 +1,7 @@
 ---
 name: On Merge
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -9,6 +10,7 @@ on:
       - release
       - dev
       - demo
+
 env:
   ACCOUNTID: 952256534162
   IMAGE_NAME: experiment-ga
