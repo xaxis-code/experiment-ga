@@ -1,3 +1,8 @@
 __pycache__
 .pytest_cache
 output.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/experiment-ga.iml
+/.idea/modules.xml
+/.idea/workspace.xml
